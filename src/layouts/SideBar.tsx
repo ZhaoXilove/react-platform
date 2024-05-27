@@ -10,6 +10,7 @@ const { Sider } = Layout;
 type MenuItemType = {
   key: string;
   label: React.ReactNode;
+  icon?: React.ReactNode;
   children?: MenuItemType[];
 };
 
@@ -36,12 +37,14 @@ const Sidebar: React.FC<SidebarType> = ({ collapsed }) => {
       if (route.children && route.children.length > 0) {
         return {
           key: fullPath,
+          icon: route.icon,
           label: route.name,
           children: renderMenuItems(route.children, `${fullPath}/`),
         };
       }
       return {
         key: fullPath,
+        icon: route.icon,
         label: <Link to={fullPath}>{route.name}</Link>,
       };
     });
