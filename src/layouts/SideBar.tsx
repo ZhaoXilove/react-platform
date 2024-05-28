@@ -1,8 +1,7 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import routes from "../router/routes";
-import { ExtendedRouteObject } from "../router/routes";
+import  routes, { ExtendedRouteObject }  from "../router/routes";
 import type { HeaderComponentProps } from "./Header";
 
 const { Sider } = Layout;
@@ -18,12 +17,16 @@ type SidebarType = {} & HeaderComponentProps;
 
 const Sidebar: React.FC<SidebarType> = ({ collapsed }) => {
   const location = useLocation();
+  
+  // 获取以PATH:'/'为准的Route
+  const rootRoute: ExtendedRouteObject | undefined = routes.find((route) => route.path === '/');
+  console.log(rootRoute);
 
   /**
-   * 递归渲染菜单项
-   * @param routes 路由数组
-   * @param parentPath 父路径
-   * @returns 菜单项数组
+   * Recursively render menu items
+   * @param routes Array of routes
+   * @param parentPath Parent path
+   * @returns Array of menu items
    */
   const renderMenuItems = (
     routes: ExtendedRouteObject[],
@@ -51,10 +54,10 @@ const Sidebar: React.FC<SidebarType> = ({ collapsed }) => {
   };
 
   /**
-   * 查找需要展开的菜单项
-   * @param routes 路由数组
-   * @param parentPath 父路径
-   * @returns 需要展开的菜单项数组
+   * Find menu items that need to be expanded
+   * @param routes Array of routes
+   * @param parentPath Parent path
+   * @returns Array of menu items to be expanded
    */
   const findOpenKeys = (
     routes: ExtendedRouteObject[],
@@ -76,8 +79,9 @@ const Sidebar: React.FC<SidebarType> = ({ collapsed }) => {
     }, []);
   };
 
-  const openKeys = findOpenKeys(routes);
-  const menuItems = renderMenuItems(routes);
+  // Use rootRoute in renderMenuItems and findOpenKeys functions
+  const openKeys = rootRoute ? findOpenKeys([rootRoute]) : [];
+  const menuItems = rootRoute ? renderMenuItems([rootRoute]) : [];
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
