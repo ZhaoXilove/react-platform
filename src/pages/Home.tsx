@@ -1,7 +1,5 @@
-import React from 'react';
-
 const Home: React.FC = () => {
-    return <span>Home</span>;
+  return <span>{`${import.meta.env.VITE_SOME_KEY} home page`}</span>;
 };
 
 export default Home;
